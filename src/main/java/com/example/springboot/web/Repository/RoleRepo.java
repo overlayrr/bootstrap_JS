@@ -6,10 +6,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Repository
 @Transactional
 public interface RoleRepo extends JpaRepository<Role,Long>, Serializable {
-    Set<Role> findByName(String name);
+    Set<Role> findByRole(String name);
 }

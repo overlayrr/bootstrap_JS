@@ -3,37 +3,27 @@ package com.example.springboot.web.models;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
+    private String role;
 
-    @Column(name = "name")
-    private String name;
+    @Transient
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
 
-    @ManyToMany(mappedBy = "roles",fetch = FetchType.EAGER)
-    private Set<User> users;
+    public Role() {
+    }
 
     public Role(Long id, String name) {
         this.id = id;
-        this.name = name;
+        this.role = name;
     }
-
-    public Role(String name) {
-        this.name = name;
-    }
-
-    public Role(Long id) {
-        this.id = id;
-    }
-
-    public Role() {}
 
     public Long getId() {
         return id;
@@ -43,29 +33,29 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getRole() {
+        return role;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public Set<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 
     @Override
-    public String toString() {
-        return getName();
+    public String getAuthority() {
+        return role;
     }
 
     @Override
-    public String getAuthority() {
-        return getName();
+    public String toString() {
+        return role;
     }
 }

@@ -4,65 +4,49 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User implements Serializable, UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "firstName")
+    @Column()
     private String firstName;
 
-    @Column(name = "lastName")
+    @Column()
     private String lastName;
 
-    @Column(name = "age")
-    private int age;
+    @Column()
+    private Integer age;
 
-    @Column(name = "email")
+    @Column()
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    private Set<Role> roles;
-
-    @Column(name = "password")
+    @Column()
     private String password;
 
-    public User(
-            Long id,
-            String firstName,
-            String lastName,
-            int age,
-            String email,
-            Set<Role> roles,
-            String password) {
-        this.id = id;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles;
+
+    public User() {
+    }
+
+    public User(String firstName, String lastName, int age, String mail, String password, Set<Role> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
-        this.email = email;
-        this.roles = roles;
+        this.email = mail;
         this.password = password;
-    }
-
-    public User(
-            String firstName, String lastName, int age, String email, Set<Role> roles, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.email = email;
         this.roles = roles;
-        this.password = password;
     }
-
-    public User() {}
 
     public Long getId() {
         return id;
@@ -88,11 +72,11 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -100,20 +84,8 @@ public class User implements UserDetails {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public String getRolesString() {
-        return getRoles().stream().map(Object::toString).collect(Collectors.joining(", "));
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setEmail(String mail) {
+        this.email = mail;
     }
 
     @Override
@@ -126,21 +98,9 @@ public class User implements UserDetails {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     @Override
     public String getUsername() {
         return email;
-    }
-
-    public boolean isAdmin() {
-        return getRolesString().contains("ADMIN");
-    }
-
-    public boolean isUser() {
-        return getRolesString().contains("USER");
     }
 
     @Override
@@ -163,27 +123,27 @@ public class User implements UserDetails {
         return true;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
-        return "User{"
-                + "id="
-                + id
-                + ", firstName='"
-                + firstName
-                + '\''
-                + ", lastName='"
-                + lastName
-                + '\''
-                + ", age="
-                + age
-                + ", email='"
-                + email
-                + '\''
-                + ", roles="
-                + roles
-                + ", password='"
-                + password
-                + '\''
-                + '}';
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", mail='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

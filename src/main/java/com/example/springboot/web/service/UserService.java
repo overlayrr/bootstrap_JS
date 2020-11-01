@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.example.springboot.web.models.User;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -49,7 +50,7 @@ public class UserService implements UserDetailsService {
     }
 
     public Set<Role> createRole(String name) {
-        return roleRepo.findByName(name);
+        return roleRepo.findByRole(name);
     }
 
     public void deleteUser(long id) {

@@ -43,7 +43,9 @@ public class RestControllers {
 
     @PostMapping("/addUser")
     public ResponseEntity<?> addUser(@RequestBody User user) {
-        
+       if (user.getAge() == null){
+           user.setAge(0);
+       }
         userService.addUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

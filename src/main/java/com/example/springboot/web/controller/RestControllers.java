@@ -10,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -46,12 +48,22 @@ public class RestControllers {
        if (user.getAge() == null){
            user.setAge(0);
        }
+        Set<Role> resultRoleSet = user.getRoles()
+                .stream()
+                .map(role -> userService.createRole(role.getAuthority()).get())
+                .collect(Collectors.toSet());
+       user.setRoles(resultRoleSet);
         userService.addUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/editUser")
     public ResponseEntity<?> editUser(@RequestBody User user) {
+        Set<Role> resultRoleSet = user.getRoles()
+                .stream()
+                .map(role -> userService.createRole(role.getAuthority()).get())
+                .collect(Collectors.toSet());
+        user.setRoles(resultRoleSet);
             userService.updateUser(user);
         return new ResponseEntity<>(user,HttpStatus.CREATED);
     }

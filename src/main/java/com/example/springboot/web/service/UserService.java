@@ -3,15 +3,14 @@ package com.example.springboot.web.service;
 import com.example.springboot.web.Repository.RoleRepo;
 import com.example.springboot.web.Repository.UserRepo;
 import com.example.springboot.web.models.Role;
+import com.example.springboot.web.models.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import com.example.springboot.web.models.User;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -36,10 +35,6 @@ public class UserService implements UserDetailsService {
         return userRepo.getOne(id);
     }
 
-    public User getUserIdByLogin(String email) {
-        return userRepo.findByEmail(email);
-    }
-
     public List<User> getAllUsers() {
         return userRepo.findAll();
     }
@@ -49,7 +44,7 @@ public class UserService implements UserDetailsService {
         userRepo.saveAndFlush(user);
     }
 
-    public Set<Role> createRole(String name) {
+    public Optional<Role> createRole(String name) {
         return roleRepo.findByRole(name);
     }
 

@@ -7,10 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
 @Transactional
 public interface RoleRepo extends JpaRepository<Role,Long>, Serializable {
-    Set<Role> findByRole(String name);
+    Optional<Role> findByRole(String name);
 }
